@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Demo Form</title>
+    <title>Demo Form with File Upload</title>
     <style>
         body {
             display: flex;
@@ -36,6 +36,9 @@
             border-radius: 4px;
             font-size: 1em;
         }
+        .form-group input[type="file"] {
+            padding: 5px;
+        }
         .submit-button {
             width: 100%;
             padding: 10px;
@@ -63,6 +66,9 @@
         <div class="form-group">
             <input type="email" id="email" placeholder="Электронная почта">
         </div>
+        <div class="form-group">
+            <input type="file" id="files" multiple>
+        </div>
         <button class="submit-button" onclick="submitForm()">Отправить</button>
     </div>
 
@@ -71,28 +77,57 @@
             const name = document.getElementById('name').value;
             const phone = document.getElementById('phone').value;
             const email = document.getElementById('email').value;
+            const filesInput = document.getElementById('files');
+            const files = Array.from(filesInput.files); // Получаем файлы как массив
 
-            const formData = {
+            const formInfo = {
                 'Имя': name,
                 'Телефон': phone,
-                'Почта': email,
-                'Рофл поле': '123'
+                'Почта': email
             };
 
-            fetch('http://localhost:4300/send', { 
-              method: 'POST', 
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                email: 'egorknyazev10@mail.ru',
-                title: 'Новая заявка', 
+            console.log('Form Data:', formInfo);
+            console.log('Uploaded Files:', files);
+
+            if (files.length > 0) {
+                files.forEach((file, index) => {
+                    console.log(`File ${index + 1}:`, file.name, file.size, file.type);
+                });
+            } else {
+                console.log('No files uploaded.');
+            }
+
+            const formData = new FormData();
+
+            // Добавляем текстовые данные
+            formData.append('email', 'egorknyazev10@mail.ru');
+            formData.append('title', 'Новая заявка');
+            formData.append('body', JSON.stringify(formInfo));
+            formData.append('apiKey', 'VFwk5gUdOv7TrlPH');
+
+            // Добавляем файлы
+            files.forEach((file, index) => {
+                formData.append(`attachments`, file); // `attachments` - имя параметра, под которым сервер ждёт файлы
+            });
+
+            // Отправляем запрос
+            fetch('http://localhost:4300/send', {
+                method: 'POST',
                 body: formData,
-                apiKey: 'VFwk5gUdOv7TrlPH',
-              })
             })
 
-            console.log('Form Data:', formData);
+            // fetch('http://localhost:4300/send', { 
+            //   method: 'POST', 
+            //   headers: {
+            //     'Content-Type': 'application/json',
+            //   },
+            //   body: JSON.stringify({
+            //     email: 'egorknyazev10@mail.ru',
+            //     title: 'Новая заявка', 
+            //     body: formData,
+            //     apiKey: 'VFwk5gUdOv7TrlPH',
+            //   })
+            // })
         }
     </script>
 </body>
