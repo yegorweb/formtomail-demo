@@ -73,7 +73,7 @@
     </div>
 
     <script>
-        function submitForm() {
+        async function submitForm() {
             const name = document.getElementById('name').value;
             const phone = document.getElementById('phone').value;
             const email = document.getElementById('email').value;
@@ -100,29 +100,30 @@
             const formData = new FormData();
 
             // Добавляем текстовые данные
-            formData.append('email', 'egorknyazev10@mail.ru');
+            formData.append('to', JSON.stringify(['egorknyazev10@mail.ru']));
             formData.append('title', 'Новая заявка');
             formData.append('body', JSON.stringify(formInfo));
-            formData.append('apiKey', 'VFwk5gUdOv7TrlPH');
+            formData.append('apiKey', 'YDOjQmWnsHwmZTXg');
 
             // Добавляем файлы
             files.forEach((file, index) => {
-                formData.append(`attachments`, file); // `attachments` - имя параметра, под которым сервер ждёт файлы
+                formData.append(`attachments`, file, encodeURIComponent(file.name)); // `attachments` - имя параметра, под которым сервер ждёт файлы
             });
 
             // Отправляем запрос
-            fetch('http://localhost:4300/send', {
+            let res = await fetch('http://localhost:4300/send', {
                 method: 'POST',
                 body: formData,
             })
-
+            let body = await res.json()
+            console.log(body)
             // fetch('http://localhost:4300/send', { 
             //   method: 'POST', 
             //   headers: {
             //     'Content-Type': 'application/json',
             //   },
             //   body: JSON.stringify({
-            //     email: 'egorknyazev10@mail.ru',
+            //     to: 'egorknyazev10@mail.ru',
             //     title: 'Новая заявка', 
             //     body: formData,
             //     apiKey: 'VFwk5gUdOv7TrlPH',
