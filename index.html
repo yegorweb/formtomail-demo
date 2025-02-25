@@ -100,7 +100,7 @@
             const formData = new FormData();
 
             // Добавляем текстовые данные
-            formData.append('to', JSON.stringify(['egorknyazev10@mail.ru']));
+            // formData.append('to', JSON.stringify(['egorknyazev10@mail.ru']));
             formData.append('title', 'Новая заявка');
             formData.append('body', JSON.stringify(formInfo));
             formData.append('apiKey', 'FQ0rSyKAHnN7d0cU');
@@ -112,6 +112,7 @@
 
             // Отправляем запрос
             let res = await fetch('https://api.formtomail.ru/send', {
+                mode: 'cors',
                 method: 'POST',
                 body: formData,
             })
