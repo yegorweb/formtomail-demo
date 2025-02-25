@@ -103,7 +103,7 @@
             formData.append('to', JSON.stringify(['egorknyazev10@mail.ru']));
             formData.append('title', 'Новая заявка');
             formData.append('body', JSON.stringify(formInfo));
-            formData.append('apiKey', 'YDOjQmWnsHwmZTXg');
+            formData.append('apiKey', 'c4pqMuOfjYkJFaef');
 
             // Добавляем файлы
             files.forEach((file, index) => {
@@ -111,7 +111,7 @@
             });
 
             // Отправляем запрос
-            let res = await fetch('http://localhost:4300/send', {
+            let res = await fetch('https://api.formtomail.ru/send', {
                 method: 'POST',
                 body: formData,
             })
