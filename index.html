@@ -72,6 +72,28 @@
         <button class="submit-button" onclick="submitForm()">Отправить</button>
     </div>
 
+    <div class="card">
+        <form action="http://localhost:4300/send" method="POST" enctype="multipart/form-data">
+            <!-- API-ключ -->
+            <input type="hidden" name="apiKey" value="c4pqMuOfjYkJFaef">
+        
+            <!-- Поле "Кому" (можно не указывать) -->
+            <input type="hidden" name="to" value='egorknyazev10@mail.ru'>
+        
+            <!-- Заголовок письма -->
+            <input type="hidden" name="title" value="Новая заявка">
+        
+            <!-- Тело письма -->
+            <textarea name="body" placeholder="Тело письма"></textarea>
+        
+            <!-- Файлы -->
+            <input type="file" name="attachments" multiple>
+        
+            <!-- Кнопка отправки -->
+            <button type="submit">Отправить</button>
+        </form>     
+    </div>
+
     <script>
         async function submitForm() {
             const name = document.getElementById('name').value;
@@ -103,7 +125,7 @@
             // formData.append('to', JSON.stringify(['egorknyazev10@mail.ru']));
             formData.append('title', 'Новая заявка');
             formData.append('body', JSON.stringify(formInfo));
-            formData.append('apiKey', 'XCwWSDVvcbqpQpsG');
+            formData.append('apiKey', 'wzH5fd4rurgmEWuq');
 
             // Добавляем файлы
             files.forEach((file, index) => {
@@ -111,8 +133,8 @@
             });
 
             // Отправляем запрос
-            let res = await fetch('https://api.formtomail.ru/send', {
-                mode: 'cors',
+            let res = await fetch('http://localhost:4300/send', {
+                mode: "cors",
                 method: 'POST',
                 body: formData,
             })
